@@ -1,0 +1,4 @@
+extends:
+  - recommended
+rules:
+  no-unused-components: off # B04 intentionally defines reusable components before feature paths.
