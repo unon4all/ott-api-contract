@@ -2,6 +2,9 @@ openapi: 3.1.0
 info:
   title: Nigeria OTT API
   version: 1.0.0
+  license:
+    name: Proprietary
+    identifier: LicenseRef-Proprietary
   description: >-
     Shared version-one transport contract. Feature paths are added by their owning
     phases; this foundation defines only common components.
