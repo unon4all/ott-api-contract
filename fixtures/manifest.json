@@ -1,0 +1,7 @@
+{
+  "errors/validation-error.json": "Problem",
+  "errors/auth-required.json": "Problem",
+  "errors/internal-error.json": "Problem",
+  "errors/unknown-code.json": "Problem",
+  "compatibility/transport-probe.json": "CompatibilityProbe"
+}

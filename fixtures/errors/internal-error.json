@@ -1,0 +1,8 @@
+{
+  "type": "urn:ott:problem:internal-error",
+  "title": "Internal server error",
+  "status": 500,
+  "code": "INTERNAL_ERROR",
+  "traceId": "demo-request-03",
+  "detail": "The request could not be completed."
+}

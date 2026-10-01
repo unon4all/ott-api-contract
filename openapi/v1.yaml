@@ -1,0 +1,159 @@
+openapi: 3.1.0
+info:
+  title: Nigeria OTT API
+  version: 1.0.0
+  description: >-
+    Shared version-one transport contract. Feature paths are added by their owning
+    phases; this foundation defines only common components.
+servers:
+  - url: /v1
+    description: Version-one API base path; the deployment origin is environment-specific.
+paths: {}
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Documentation placeholder. Authentication is implemented in B11.
+  schemas:
+    OpaqueId:
+      type: string
+      minLength: 1
+      maxLength: 128
+      description: Stable opaque identifier. Clients must not parse a prefix or infer order.
+      examples: [cnt_demo_movie]
+    UtcTimestamp:
+      type: string
+      format: date-time
+      description: ISO-8601 UTC instant, including a timezone designator.
+      examples: ['2026-09-20T12:00:00Z']
+    TraceId:
+      type: string
+      pattern: '^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$'
+      description: Server-accepted or generated request correlation identifier.
+      examples: [demo-request-01]
+    CursorToken:
+      type: string
+      minLength: 1
+      maxLength: 1024
+      pattern: '^[A-Za-z0-9_-]+$'
+      description: Opaque pagination token. Clients must neither decode nor construct it.
+      examples: [ZGVtb19jdXJzb3I]
+    CursorPage:
+      type: object
+      additionalProperties: false
+      required: [nextCursor]
+      properties:
+        nextCursor:
+          oneOf:
+            - $ref: '#/components/schemas/CursorToken'
+            - type: 'null'
+          description: Null means no subsequent page.
+      examples:
+        - nextCursor: ZGVtb19jdXJzb3I
+    ValidationIssue:
+      type: object
+      additionalProperties: false
+      required: [field, reason]
+      properties:
+        field:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Safe request field path, never a submitted value.
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 128
+          description: Stable validation constraint name.
+    Problem:
+      type: object
+      additionalProperties: false
+      required: [type, title, status, code, traceId]
+      properties:
+        type:
+          type: string
+          format: uri
+          description: Stable urn:ott:problem:<slug> identifier.
+        title:
+          type: string
+          minLength: 1
+        status:
+          type: integer
+          minimum: 400
+          maximum: 599
+        code:
+          type: string
+          pattern: '^[A-Z][A-Z0-9_]*$'
+          description: Open string for forward-compatible unknown-code fallback.
+        traceId:
+          $ref: '#/components/schemas/TraceId'
+        detail:
+          type: string
+          description: Optional safe explanation; never an internal exception message.
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationIssue'
+          description: Optional field-safe validation issues.
+    CompatibilityProbe:
+      type: object
+      additionalProperties: true
+      description: Test-only serializer probe; not an API response or domain model.
+      required: [id, occurredAt, state]
+      properties:
+        id:
+          $ref: '#/components/schemas/OpaqueId'
+        occurredAt:
+          $ref: '#/components/schemas/UtcTimestamp'
+        state:
+          type: string
+          description: Test-only extensible enum value for UNKNOWN fallback.
+          x-extensible-enum: [KNOWN]
+  parameters:
+    Cursor:
+      name: cursor
+      in: query
+      required: false
+      schema:
+        $ref: '#/components/schemas/CursorToken'
+    Limit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+      description: Endpoint chooses and documents its default and tighter cap.
+    XRequestId:
+      name: X-Request-ID
+      in: header
+      required: false
+      schema:
+        $ref: '#/components/schemas/TraceId'
+      description: Invalid values are replaced by a server-generated ID.
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      schema:
+        type: string
+        pattern: '^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$'
+      description: Used only by operations that explicitly declare replay semantics.
+  headers:
+    XRequestId:
+      description: Correlation ID accepted or generated for this request.
+      schema:
+        $ref: '#/components/schemas/TraceId'
+  responses:
+    Problem:
+      description: Typed problem response; endpoint operations declare applicable statuses.
+      headers:
+        X-Request-ID:
+          $ref: '#/components/headers/XRequestId'
+      content:
+        application/problem+json:
+          schema:
+            $ref: '#/components/schemas/Problem'

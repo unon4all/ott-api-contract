@@ -1,0 +1,24 @@
+{
+  "name": "nigeria-ott-api-contract",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.15.0 <25",
+    "pnpm": ">=11.19.0 <12"
+  },
+  "packageManager": "pnpm@11.19.0",
+  "scripts": {
+    "lint": "redocly lint openapi/v1.yaml",
+    "bundle": "redocly bundle openapi/v1.yaml --output /tmp/nigeria-ott-openapi-bundle.json --ext json",
+    "fixtures:check": "node scripts/validate-fixtures.mjs",
+    "breaking:check": "node scripts/check-breaking.mjs",
+    "verify": "pnpm lint && pnpm bundle && pnpm fixtures:check && node --test test/*.test.mjs"
+  },
+  "devDependencies": {
+    "@redocly/cli": "2.57.0",
+    "ajv": "8.20.0",
+    "ajv-formats": "3.0.1",
+    "yaml": "2.9.1"
+  }
+}

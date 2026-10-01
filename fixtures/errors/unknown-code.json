@@ -1,0 +1,8 @@
+{
+  "type": "urn:ott:problem:future-code",
+  "title": "Future error",
+  "status": 409,
+  "code": "FUTURE_CLIENT_SAFE_CODE",
+  "traceId": "demo-request-04",
+  "detail": "This fixture tests the generic client fallback."
+}

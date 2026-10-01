@@ -1,0 +1,9 @@
+{
+  "type": "urn:ott:problem:validation-error",
+  "title": "Invalid request",
+  "status": 400,
+  "code": "VALIDATION_ERROR",
+  "traceId": "demo-request-01",
+  "detail": "One or more request fields are invalid.",
+  "errors": [{ "field": "limit", "reason": "isInt" }]
+}

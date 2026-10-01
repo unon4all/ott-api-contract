@@ -1,0 +1,8 @@
+{
+  "type": "urn:ott:problem:auth-required",
+  "title": "Authentication required",
+  "status": 401,
+  "code": "AUTH_REQUIRED",
+  "traceId": "demo-request-02",
+  "detail": "Sign in to continue."
+}

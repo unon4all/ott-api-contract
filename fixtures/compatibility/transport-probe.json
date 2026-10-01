@@ -1,0 +1,6 @@
+{
+  "id": "cnt_demo_opaque",
+  "occurredAt": "2026-09-20T12:00:00Z",
+  "state": "FUTURE_UNKNOWN_VALUE",
+  "futureOptionalField": "Clients should ignore this field."
+}
