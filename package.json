@@ -12,6 +12,7 @@
     "lint": "redocly lint openapi/v1.yaml",
     "bundle": "redocly bundle openapi/v1.yaml --output dist/v1.json --ext json",
     "fixtures:check": "node scripts/validate-fixtures.mjs",
+    "android:check": "node scripts/verify-android.mjs",
     "breaking:check": "node scripts/check-breaking.mjs",
     "verify": "pnpm lint && pnpm bundle && pnpm fixtures:check && node --test test/*.test.mjs"
   },

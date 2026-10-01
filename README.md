@@ -13,9 +13,12 @@ pnpm bundle
 pnpm fixtures:check
 pnpm verify
 pnpm breaking:check -- --base-ref origin/main
+pnpm android:check
 ```
 
 `pnpm breaking:check` compares with the approved Git baseline. CI fetches `origin/main` and fails on structural changes such as removed paths, removed response fields, changed types, tighter requiredness and narrowed enums. It is intentionally conservative and does not detect semantic changes; reviewers must still classify status, meaning, ordering, authorization and pagination changes. An intentional breaking change needs a changelog migration window or `/v2`, plus Android/backend review. Do not disable the gate to pass a PR.
+
+`pnpm android:check` runs the current Android production serializer and error mapper against the exact shared B04 fixtures, plus its existing `core:data` fixture/UNKNOWN tests. Set `OTT_ANDROID_DIR` if Android is not the sibling `../ott-android`. The Gradle init script adds a test source from this repository to the build without editing the Android checkout. This manual cross-workstream check is required at B04 handoff; Android's P12/P13 phases own permanent product DTO integration.
 
 ## Transport conventions
 

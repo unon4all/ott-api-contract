@@ -1,0 +1,11 @@
+gradle.beforeProject { project ->
+    if (project.path == ':core:network') {
+        project.plugins.withId('org.jetbrains.kotlin.jvm') {
+            def contractRoot = System.getenv('OTT_CONTRACT_DIR')
+            if (contractRoot == null) throw new GradleException('OTT_CONTRACT_DIR is required')
+            project.extensions.getByName('kotlin').sourceSets.getByName('test').kotlin.srcDir(
+                new File(contractRoot, 'android-tests')
+            )
+        }
+    }
+}
