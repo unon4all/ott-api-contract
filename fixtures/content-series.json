@@ -1,0 +1,27 @@
+{
+  "id": "cnt_market_day",
+  "type": "SERIES",
+  "canonicalTitle": "Market Day",
+  "alternativeTitle": null,
+  "shortSynopsis": "A family market stall becomes the centre of a changing Lagos neighbourhood.",
+  "synopsis": "Three siblings keep their mother’s market stall open while each season uncovers a new family promise.",
+  "releaseYear": 2025,
+  "ageRating": "PG",
+  "primaryLanguage": "en-NG",
+  "availableAudioLanguages": ["en-NG"],
+  "subtitleLanguages": [],
+  "artwork": [{"id": "art_market_poster", "kind": "POSTER", "url": "https://example.invalid/artwork/market-day-poster.jpg", "width": 1200, "height": 1800, "locale": null}],
+  "credits": [{"id": "crd_market_actor", "personId": "prs_adaeze_okoro", "displayName": "Adaeze Okoro", "role": "ACTOR", "characterName": "Kemi", "billingOrder": 1}, {"id": "crd_market_producer", "personId": "prs_tunde_adebayo", "displayName": "Tunde Adebayo", "role": "PRODUCER", "characterName": null, "billingOrder": 2}],
+  "productionCompanies": [{"id": "prc_sunrise_pictures", "displayName": "Sunrise Pictures"}, {"id": "prc_riverbend_studios", "displayName": "Riverbend Studios"}],
+  "runtimeSeconds": null,
+  "seasons": [
+    {"id": "sea_market_day_1", "seasonNumber": 1, "displayTitle": "First Market", "synopsis": null, "releaseYear": 2025, "episodes": [
+      {"id": "cnt_market_day_s1e1", "type": "EPISODE", "canonicalTitle": "Opening Bell", "shortSynopsis": "Kemi returns to the stall.", "releaseYear": 2025, "ageRating": "PG", "primaryLanguage": "en-NG", "artwork": [], "episodeNumber": 1, "runtimeSeconds": 1740},
+      {"id": "cnt_market_day_s1e2", "type": "EPISODE", "canonicalTitle": "The Ledger", "shortSynopsis": null, "releaseYear": 2025, "ageRating": "PG", "primaryLanguage": "en-NG", "artwork": [], "episodeNumber": 2, "runtimeSeconds": 1680}
+    ]},
+    {"id": "sea_market_day_2", "seasonNumber": 2, "displayTitle": "New Terms", "synopsis": "A new lease tests old promises.", "releaseYear": 2026, "episodes": [
+      {"id": "cnt_market_day_s2e1", "type": "EPISODE", "canonicalTitle": "The New Lease", "shortSynopsis": "The family faces a deadline.", "releaseYear": 2026, "ageRating": "PG", "primaryLanguage": "en-NG", "artwork": [], "episodeNumber": 1, "runtimeSeconds": 1800}
+    ]}
+  ]
+}
+

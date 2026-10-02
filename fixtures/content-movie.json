@@ -1,0 +1,19 @@
+{
+  "id": "cnt_lagos_after_rain",
+  "type": "MOVIE",
+  "canonicalTitle": "Lagos After Rain",
+  "alternativeTitle": null,
+  "shortSynopsis": "A radio producer follows one unfinished story through a flooded Lagos night.",
+  "synopsis": "A determined radio producer and an estranged photographer retrace a story that was never aired before dawn changes the city around them.",
+  "releaseYear": 2025,
+  "ageRating": "12",
+  "primaryLanguage": "en-NG",
+  "availableAudioLanguages": ["en-NG", "yo-NG"],
+  "subtitleLanguages": ["en"],
+  "artwork": [{"id": "art_lagos_poster", "kind": "POSTER", "url": "https://example.invalid/artwork/lagos-after-rain-poster.jpg", "width": 1200, "height": 1800, "locale": "en-NG"}],
+  "credits": [{"id": "crd_lagos_actor", "personId": "prs_adaeze_okoro", "displayName": "Adaeze Okoro", "role": "ACTOR", "characterName": "Amara", "billingOrder": 1}, {"id": "crd_lagos_director", "personId": "prs_tunde_adebayo", "displayName": "Tunde Adebayo", "role": "DIRECTOR", "characterName": null, "billingOrder": 2}],
+  "productionCompanies": [{"id": "prc_sunrise_pictures", "displayName": "Sunrise Pictures"}],
+  "runtimeSeconds": 6120,
+  "seasons": null
+}
+

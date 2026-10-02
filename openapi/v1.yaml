@@ -11,7 +11,34 @@ info:
 servers:
   - url: /v1
     description: Version-one API base path; the deployment origin is environment-specific.
-paths: {}
+paths:
+  /content/{id}:
+    get:
+      operationId: getContentById
+      summary: Get public movie or series details
+      description: Published catalogue metadata only; rights and playback are not evaluated.
+      security:
+        - {}
+        - BearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ContentId'
+        - $ref: '#/components/parameters/XRequestId'
+      responses:
+        '200':
+          description: Published movie or series details.
+          headers:
+            X-Request-ID:
+              $ref: '#/components/headers/XRequestId'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ContentDetail'
+        '404':
+          $ref: '#/components/responses/ContentNotFound'
+        '500':
+          $ref: '#/components/responses/Problem'
+        '503':
+          $ref: '#/components/responses/Problem'
 components:
   securitySchemes:
     BearerAuth:
@@ -20,6 +47,114 @@ components:
       bearerFormat: JWT
       description: Documentation placeholder. Authentication is implemented in B11.
   schemas:
+    ContentType:
+      type: string
+      enum: [MOVIE, SERIES, EPISODE]
+      description: Extensible; clients map unknown values to UNKNOWN.
+    ArtworkKind:
+      type: string
+      enum: [POSTER, BACKDROP, THUMBNAIL, LOGO]
+      description: Extensible; clients map unknown values safely.
+    CreditRole:
+      type: string
+      enum: [ACTOR, DIRECTOR, PRODUCER]
+      description: Extensible; clients map unknown values safely.
+    ArtworkRef:
+      type: object
+      additionalProperties: false
+      required: [id, kind, url, width, height, locale]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        kind: { $ref: '#/components/schemas/ArtworkKind' }
+        url: { type: string, format: uri }
+        width: { type: [integer, 'null'], minimum: 1 }
+        height: { type: [integer, 'null'], minimum: 1 }
+        locale: { type: [string, 'null'], maxLength: 35 }
+    Credit:
+      type: object
+      additionalProperties: false
+      required: [id, personId, displayName, role, characterName, billingOrder]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        personId: { $ref: '#/components/schemas/OpaqueId' }
+        displayName: { type: string, minLength: 1 }
+        role: { $ref: '#/components/schemas/CreditRole' }
+        characterName: { type: [string, 'null'] }
+        billingOrder: { type: integer, minimum: 0 }
+    ProductionCompany:
+      type: object
+      additionalProperties: false
+      required: [id, displayName]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        displayName: { type: string, minLength: 1 }
+    ContentSummary:
+      type: object
+      additionalProperties: false
+      required: [id, type, canonicalTitle, shortSynopsis, releaseYear, ageRating, primaryLanguage, artwork]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        type: { $ref: '#/components/schemas/ContentType' }
+        canonicalTitle: { type: string, minLength: 1 }
+        shortSynopsis: { type: [string, 'null'] }
+        releaseYear: { type: [integer, 'null'] }
+        ageRating: { type: [string, 'null'] }
+        primaryLanguage: { type: string, minLength: 1 }
+        artwork:
+          type: array
+          items: { $ref: '#/components/schemas/ArtworkRef' }
+    EpisodeSummary:
+      type: object
+      additionalProperties: false
+      required: [id, type, canonicalTitle, shortSynopsis, releaseYear, ageRating, primaryLanguage, artwork, episodeNumber, runtimeSeconds]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        type: { const: EPISODE }
+        canonicalTitle: { type: string, minLength: 1 }
+        shortSynopsis: { type: [string, 'null'] }
+        releaseYear: { type: [integer, 'null'] }
+        ageRating: { type: [string, 'null'] }
+        primaryLanguage: { type: string, minLength: 1 }
+        artwork:
+          type: array
+          items: { $ref: '#/components/schemas/ArtworkRef' }
+        episodeNumber: { type: integer, minimum: 1 }
+        runtimeSeconds: { type: integer, minimum: 1 }
+    Season:
+      type: object
+      additionalProperties: false
+      required: [id, seasonNumber, displayTitle, synopsis, releaseYear, episodes]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        seasonNumber: { type: integer, minimum: 1 }
+        displayTitle: { type: [string, 'null'] }
+        synopsis: { type: [string, 'null'] }
+        releaseYear: { type: [integer, 'null'] }
+        episodes:
+          type: array
+          items: { $ref: '#/components/schemas/EpisodeSummary' }
+    ContentDetail:
+      type: object
+      additionalProperties: false
+      description: type=MOVIE requires runtimeSeconds and seasons=null; type=SERIES requires seasons and runtimeSeconds=null.
+      required: [id, type, canonicalTitle, alternativeTitle, shortSynopsis, synopsis, releaseYear, ageRating, primaryLanguage, availableAudioLanguages, subtitleLanguages, artwork, credits, productionCompanies, runtimeSeconds, seasons]
+      properties:
+        id: { $ref: '#/components/schemas/OpaqueId' }
+        type: { $ref: '#/components/schemas/ContentType' }
+        canonicalTitle: { type: string, minLength: 1 }
+        alternativeTitle: { type: [string, 'null'] }
+        shortSynopsis: { type: [string, 'null'] }
+        synopsis: { type: [string, 'null'] }
+        releaseYear: { type: [integer, 'null'] }
+        ageRating: { type: [string, 'null'] }
+        primaryLanguage: { type: string, minLength: 1 }
+        availableAudioLanguages: { type: array, items: { type: string } }
+        subtitleLanguages: { type: array, items: { type: string } }
+        artwork: { type: array, items: { $ref: '#/components/schemas/ArtworkRef' } }
+        credits: { type: array, items: { $ref: '#/components/schemas/Credit' } }
+        productionCompanies: { type: array, items: { $ref: '#/components/schemas/ProductionCompany' } }
+        runtimeSeconds: { type: [integer, 'null'], minimum: 1 }
+        seasons: { type: [array, 'null'], items: { $ref: '#/components/schemas/Season' } }
     OpaqueId:
       type: string
       minLength: 1
@@ -115,6 +250,11 @@ components:
           description: Test-only extensible enum value for UNKNOWN fallback.
           x-extensible-enum: [KNOWN]
   parameters:
+    ContentId:
+      name: id
+      in: path
+      required: true
+      schema: { $ref: '#/components/schemas/OpaqueId' }
     Cursor:
       name: cursor
       in: query
@@ -151,6 +291,13 @@ components:
       schema:
         $ref: '#/components/schemas/TraceId'
   responses:
+    ContentNotFound:
+      description: Content is missing or not public.
+      headers:
+        X-Request-ID: { $ref: '#/components/headers/XRequestId' }
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }
     Problem:
       description: Typed problem response; endpoint operations declare applicable statuses.
       headers:

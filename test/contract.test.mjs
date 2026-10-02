@@ -9,7 +9,7 @@ import { validateFixtures } from '../scripts/validate-fixtures.mjs';
 const contract = loadContract();
 
 test('all manifest fixtures conform to named OpenAPI components', () => {
-  assert.equal(validateFixtures(), 5);
+  assert.equal(validateFixtures(), 7);
 });
 
 test('fixture validation rejects missing required and unexpected fields without coercion', () => {
